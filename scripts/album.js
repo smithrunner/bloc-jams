@@ -30,6 +30,21 @@ var albumMarconi = {
   ]
 };
 
+// third album
+var albumHits = {
+  title: 'Whale Sounds',
+  artist: 'Various',
+  label: 'Various',
+  year: '1999',
+  albumArtUrl: 'assets/images/album_covers/15.png',
+  songs: [
+      { title: 'Blue Whale', duration: '99:41'},
+      { title: 'Killer Whale', duration: '65:01'},
+      { title: 'Humpback Whale', duration: '83:31'},
+      { title: 'Sperm Whale', duration: '38:14'},
+  ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
         '<tr class="album-view-song-item">'
@@ -41,12 +56,16 @@ var createSongRow = function(songNumber, songName, songLength) {
       return template;
 };
 
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
+
+
 var setCurrentAlbum = function(album) {
-    var albumTitle = document.getElementsByClassName('album-view-title')[0];
-    var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-    var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-    var albumImage = document.getElementsByClassName('album-cover-art')[0];
-    var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
 
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
@@ -62,4 +81,14 @@ var setCurrentAlbum = function(album) {
 
   window.onload = function() {
       setCurrentAlbum(albumPicasso);
+      var albums = [albumPicasso, albumMarconi, albumHits];
+      var albumNumber = 1;
+
+      albumImage.addEventListener("click", function(event) {
+          setCurrentAlbum(albums[albumNumber]);
+          albumNumber++;
+          if (albumNumber == albums.length) {
+            albumNumber = 0;
+          }
+      });
   };
