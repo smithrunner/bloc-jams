@@ -3,7 +3,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         '<tr class="album-view-song-item">'
       + '   <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
       + '   <td class="song-item-title">' + songName + '</td>'
-      + '   <td class="song-item-duration">' + songLength + '</td>'
+      + '   <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
       + '</tr>'
       ;
       var $row = $(template);
@@ -144,6 +144,7 @@ var updatePlayerBarSong = function() {
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+    setTotalTimeInPlayerBar(filterTimeCode(currentSongFromAlbum.duration));
 };
 
 var setSong = function(songNumber) {
@@ -202,6 +203,7 @@ var updateSeekBarWhileSongPlays = function() {
             var $seekBar = $('.seek-control .seek-bar');
 
             updateSeekPercentage($seekBar, seekBarFillRatio);
+            setCurrentTimeInPLayerBar(filterTimeCode(this.getTime()));
         });
     }
 };
@@ -257,6 +259,26 @@ var setupSeekBars = function() {
     });
 };
 
+var setCurrentTimeInPLayerBar = function(currentTime) {
+    $('.current-time').text(currentTime);
+};
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+    $('.total-time').text(totalTime);
+};
+
+var filterTimeCode = function(timeInSeconds) {
+    var numberForm = parseFloat(timeInSeconds);
+    var minutes = numberForm / 60;
+    var wholeMinutes = Math.floor(minutes);
+    var wholeSeconds = Math.floor((minutes - wholeMinutes) * 60);
+
+    if (wholeSeconds<=9) {
+        return (wholeMinutes + ":0" + wholeSeconds);
+    } else {
+        return (wholeMinutes + ":" + wholeSeconds);
+    }
+};
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
